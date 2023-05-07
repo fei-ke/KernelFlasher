@@ -221,7 +221,7 @@ class SlotViewModel(
             val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd--HH-mm"))
             val logName = if (navController.currentDestination!!.route!!.contains("ak3")) {
                 "ak3"
-            } else if (navController.currentDestination!!.route!! == "slot{slotSuffix}/backup") {
+            } else if (navController.currentDestination!!.route!! == "slot/backup") {
                 "backup"
             } else {
                 "flash"

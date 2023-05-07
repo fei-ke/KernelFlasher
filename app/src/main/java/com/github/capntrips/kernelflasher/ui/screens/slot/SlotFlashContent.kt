@@ -52,12 +52,12 @@ fun ColumnScope.SlotFlashContent(
             showDlkm = false
         )
         Spacer(Modifier.height(16.dp))
-        if (navController.currentDestination!!.route!! == "slot{slotSuffix}/flash") {
+        if (navController.currentDestination!!.route!! == "slot/flash") {
             DataCard (stringResource(R.string.flash))
             Spacer(Modifier.height(5.dp))
             FlashButton(stringResource(R.string.flash_ak3_zip), callback = { uri ->
                 navController.navigate("slot$slotSuffix/flash/ak3") {
-                    popUpTo("slot{slotSuffix}")
+                    popUpTo("slot")
                 }
                 viewModel.flashAk3(context, uri)
             })
@@ -71,18 +71,18 @@ fun ColumnScope.SlotFlashContent(
             ) {
                 Text(stringResource(R.string.flash_partition_image))
             }
-        } else if (navController.currentDestination!!.route!! == "slot{slotSuffix}/flash/image") {
+        } else if (navController.currentDestination!!.route!! == "slot/flash/image") {
             DataCard (stringResource(R.string.flash_partition_image))
             Spacer(Modifier.height(5.dp))
             for (partitionName in PartitionUtil.AvailablePartitions) {
                 FlashButton(partitionName, callback = { uri ->
                     navController.navigate("slot$slotSuffix/flash/image/flash") {
-                        popUpTo("slot{slotSuffix}")
+                        popUpTo("slot")
                     }
                     viewModel.flashImage(context, uri, partitionName)
                 })
             }
-        } else if (navController.currentDestination!!.route!! == "slot{slotSuffix}/backup") {
+        } else if (navController.currentDestination!!.route!! == "slot/backup") {
             DataCard (stringResource(R.string.backup))
             Spacer(Modifier.height(5.dp))
             val disabledColor = ButtonDefaults.buttonColors(
@@ -116,7 +116,7 @@ fun ColumnScope.SlotFlashContent(
                 onClick = {
                     viewModel.backup(context)
                     navController.navigate("slot$slotSuffix/backup/backup") {
-                        popUpTo("slot{slotSuffix}")
+                        popUpTo("slot")
                     }
                 },
                 enabled = viewModel.backupPartitions.filter { it.value }.isNotEmpty()
@@ -127,7 +127,7 @@ fun ColumnScope.SlotFlashContent(
     } else {
         Text("")
         FlashList(
-            stringResource(if (navController.currentDestination!!.route!! == "slot{slotSuffix}/backup/backup") R.string.backup else R.string.flash),
+            stringResource(if (navController.currentDestination!!.route!! == "slot/backup/backup") R.string.backup else R.string.flash),
             if (navController.currentDestination!!.route!!.contains("ak3")) viewModel.uiPrintedOutput else viewModel.flashOutput
         ) {
             AnimatedVisibility(!viewModel.isRefreshing && viewModel.wasFlashSuccess != null) {
@@ -141,7 +141,7 @@ fun ColumnScope.SlotFlashContent(
                         ) {
                             if (navController.currentDestination!!.route!!.contains("ak3")) {
                                 Text(stringResource(R.string.save_ak3_log))
-                            } else if (navController.currentDestination!!.route!! == "slot{slotSuffix}/backup/backup") {
+                            } else if (navController.currentDestination!!.route!! == "slot/backup/backup") {
                                 Text(stringResource(R.string.save_backup_log))
                             } else {
                                 Text(stringResource(R.string.save_flash_log))
@@ -149,7 +149,7 @@ fun ColumnScope.SlotFlashContent(
                         }
                     }
                     if (navController.currentDestination!!.route!!.contains("ak3")) {
-                        AnimatedVisibility(navController.currentDestination!!.route!! != "slot{slotSuffix}/backups/{backupId}/flash/ak3" && navController.previousBackStackEntry!!.destination.route!! != "slot{slotSuffix}/backups/{backupId}/flash/ak3" && viewModel.wasFlashSuccess != false) {
+                        AnimatedVisibility(navController.currentDestination!!.route!! != "slot/backups/{backupId}/flash/ak3" && navController.previousBackStackEntry!!.destination.route!! != "slot/backups/{backupId}/flash/ak3" && viewModel.wasFlashSuccess != false) {
                             OutlinedButton(
                                 modifier = Modifier
                                     .fillMaxWidth(),
@@ -157,7 +157,7 @@ fun ColumnScope.SlotFlashContent(
                                 onClick = {
                                     viewModel.backupZip(context) {
                                         navController.navigate("slot$slotSuffix/backups") {
-                                            popUpTo("slot{slotSuffix}")
+                                            popUpTo("slot")
                                         }
                                     }
                                 }
@@ -166,7 +166,7 @@ fun ColumnScope.SlotFlashContent(
                             }
                         }
                     }
-                    if (viewModel.wasFlashSuccess != false && navController.currentDestination!!.route!! == "slot{slotSuffix}/backup/backup") {
+                    if (viewModel.wasFlashSuccess != false && navController.currentDestination!!.route!! == "slot/backup/backup") {
                         OutlinedButton(
                             modifier = Modifier
                                 .fillMaxWidth(),

@@ -182,14 +182,14 @@ class MainActivity : ComponentActivity() {
                     val rebootViewModel = mainViewModel.reboot
                     BackHandler(enabled = mainViewModel.isRefreshing, onBack = {})
                     val slotFlashContent: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit = { backStackEntry ->
-                        val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")!!
+                        val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")?:""
                         val slotViewModel = if (slotSuffix == "_a") slotViewModelA else slotViewModelB
                         RefreshableScreen(mainViewModel, navController) {
                             SlotFlashContent(slotViewModel, slotSuffix, navController)
                         }
                     }
                     val slotBackupsContent: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit = { backStackEntry ->
-                        val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")!!
+                        val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")?:""
                         val slotViewModel = if (slotSuffix == "_a") slotViewModelA else slotViewModelB
                         if (backStackEntry.arguments?.getString("backupId") != null) {
                             backupsViewModel.currentBackup = backStackEntry.arguments?.getString("backupId")
@@ -206,28 +206,28 @@ class MainActivity : ComponentActivity() {
                                 MainContent(mainViewModel, navController)
                             }
                         }
-                        composable("slot{slotSuffix}") { backStackEntry ->
-                            val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")!!
+                        composable("slot") { backStackEntry ->
+                            val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")?:""
                             val slotViewModel = if (slotSuffix == "_a") slotViewModelA else slotViewModelB
-                            if (slotViewModel.wasFlashSuccess != null && navController.currentDestination!!.route.equals("slot{slotSuffix}")) {
+                            if (slotViewModel.wasFlashSuccess != null && navController.currentDestination!!.route.equals("slot")) {
                                 slotViewModel.clearFlash(this@MainActivity)
                             }
                             RefreshableScreen(mainViewModel, navController, swipeEnabled = true) {
                                 SlotContent(slotViewModel, slotSuffix, navController)
                             }
                         }
-                        composable("slot{slotSuffix}/flash", content = slotFlashContent)
-                        composable("slot{slotSuffix}/flash/ak3", content = slotFlashContent)
-                        composable("slot{slotSuffix}/flash/image", content = slotFlashContent)
-                        composable("slot{slotSuffix}/flash/image/flash", content = slotFlashContent)
-                        composable("slot{slotSuffix}/backup", content = slotFlashContent)
-                        composable("slot{slotSuffix}/backup/backup", content = slotFlashContent)
-                        composable("slot{slotSuffix}/backups", content = slotBackupsContent)
-                        composable("slot{slotSuffix}/backups/{backupId}", content = slotBackupsContent)
-                        composable("slot{slotSuffix}/backups/{backupId}/restore", content = slotBackupsContent)
-                        composable("slot{slotSuffix}/backups/{backupId}/restore/restore", content = slotBackupsContent)
-                        composable("slot{slotSuffix}/backups/{backupId}/flash/ak3") { backStackEntry ->
-                            val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")!!
+                        composable("slot/flash", content = slotFlashContent)
+                        composable("slot/flash/ak3", content = slotFlashContent)
+                        composable("slot/flash/image", content = slotFlashContent)
+                        composable("slot/flash/image/flash", content = slotFlashContent)
+                        composable("slot/backup", content = slotFlashContent)
+                        composable("slot/backup/backup", content = slotFlashContent)
+                        composable("slot/backups", content = slotBackupsContent)
+                        composable("slot/backups/{backupId}", content = slotBackupsContent)
+                        composable("slot/backups/{backupId}/restore", content = slotBackupsContent)
+                        composable("slot/backups/{backupId}/restore/restore", content = slotBackupsContent)
+                        composable("slot/backups/{backupId}/flash/ak3") { backStackEntry ->
+                            val slotSuffix = backStackEntry.arguments?.getString("slotSuffix")?:""
                             val slotViewModel = if (slotSuffix == "_a") slotViewModelA else slotViewModelB
                             backupsViewModel.currentBackup = backStackEntry.arguments?.getString("backupId")
                             if (backupsViewModel.backups.containsKey(backupsViewModel.currentBackup)) {
